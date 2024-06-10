@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
 import fetchCurrentDate from "../Helper Functions/fetchCurrentDate.js";
 
 export function Movements({
@@ -9,14 +9,15 @@ export function Movements({
   displayMovementDates,
   fetchUserObject,
 }) {
+  const [sortedMovements, setSortedMovements] = useState([]);
   const userMovements = fetchUserObject(username).movements;
 
-  const sortedMovements = useMemo(
+  useEffect(
     function () {
       const movementsCopy = [...userMovements];
       if (sort === 1) movementsCopy.sort((a, b) => a - b);
       if (sort === 2) movementsCopy.sort((a, b) => b - a);
-      return movementsCopy;
+      setSortedMovements(movementsCopy);
     },
     [userMovements, sort, currentMovements]
   );

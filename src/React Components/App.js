@@ -68,6 +68,7 @@ export default function App() {
           1000
         );
       if (secondsLeft === 0) setIsLoggedIn(false);
+      console.log(currentInterval);
 
       return () => clearInterval(currentInterval);
     },
