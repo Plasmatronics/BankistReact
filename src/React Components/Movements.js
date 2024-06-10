@@ -6,21 +6,19 @@ export function Movements({
   username,
   sort,
   currentMovements,
+  setCurrentMovements,
   displayMovementDates,
   fetchUserObject,
 }) {
-  const [sortedMovements, setSortedMovements] = useState([]);
   const userMovements = fetchUserObject(username).movements;
 
-  useEffect(
-    function () {
-      const movementsCopy = [...userMovements];
-      if (sort === 1) movementsCopy.sort((a, b) => a - b);
-      if (sort === 2) movementsCopy.sort((a, b) => b - a);
-      setSortedMovements(movementsCopy);
-    },
-    [userMovements, sort, currentMovements]
-  );
+  useEffect(() => {
+    const movementsCopy = [...userMovements];
+    if (sort === 0) setCurrentMovements(...movementsCopy);
+    if (sort === 1) movementsCopy.sort((a, b) => a - b);
+    if (sort === 2) movementsCopy.sort((a, b) => b - a);
+    setCurrentMovements(movementsCopy);
+  }, [username, sort, currentMovements]);
 
   return (
     <>
@@ -35,14 +33,14 @@ export function Movements({
       </div>
 
       <div className="movements">
-        {sortedMovements.map((value, index) =>
+        {currentMovements?.map((value, index) =>
           value > 0 ? (
             <div className="movements__row" key={index}>
               <div className="movements__type movements__type--deposit">
                 Deposit
               </div>
               <div className="movements__date">
-                {displayMovementDates(index)}
+                {displayMovementDates(value)}
               </div>
               <div className="movements__value">${value}</div>
             </div>
@@ -52,7 +50,7 @@ export function Movements({
                 Withdrawal
               </div>
               <div className="movements__date">
-                {displayMovementDates(index)}
+                {displayMovementDates(value)}
               </div>
               <div className="movements__value">-${Math.abs(value)}</div>
             </div>

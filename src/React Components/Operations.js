@@ -5,7 +5,7 @@ import { OperationTransfer } from "./OperationTransfer.js";
 export function Operations({
   username,
   calculateBalance,
-  setCurrentMovments,
+  setCurrentMovements,
   setSort,
   pin,
   setIsLoggedIn,
@@ -45,7 +45,7 @@ export function Operations({
       desiredUser.movementDates.unshift(currentDateFormatted);
       displayMovementDates(0);
       desiredUser.movements.unshift(amount);
-      setCurrentMovments(MovementsCopy);
+      setCurrentMovements(MovementsCopy);
       setSort(0);
     }
   }

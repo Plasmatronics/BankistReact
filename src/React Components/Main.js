@@ -16,8 +16,8 @@ export function Main({
   setAllAccounts,
 }) {
   const [sort, setSort] = useState(0);
-  const [currentMovements, setCurrentMovments] = useState(
-    fetchUserObject(username).movements
+  const [currentMovements, setCurrentMovements] = useState(
+    fetchUserObject(username)?.movements
   );
 
   function calculateBalance(username) {
@@ -32,7 +32,7 @@ export function Main({
       .toFixed(2);
   }
 
-  function displayMovementDates(index) {
+  function displayMovementDates(movement) {
     //   creating todays date and formatting it
     const currentDate = new Date();
     const currentDateUnformatted = new Intl.DateTimeFormat("en-US")
@@ -57,19 +57,22 @@ export function Main({
       "-" +
       currentDateUnformattedYear;
 
-    // finding the movement date for our current movement
-    const movementDate = fetchUserObject(username).movementDates.at(index);
+    // finding the movement value's index and thens selecting the date off that index
+    const movementIndex = fetchUserObject(username).movements.indexOf(movement);
+    console.log(movementIndex);
+    const currentMovementDate =
+      fetchUserObject(username).movementDates[movementIndex];
 
     //how many days have passed since the current movement
     const daysSince =
-      daysPassed(currentDateFormatted) - daysPassed(movementDate);
+      daysPassed(currentDateFormatted) - daysPassed(currentMovementDate);
     // if more than 3 day ago, just print the date
     if (daysSince === 0) return "Today";
     if (daysSince === 1) return "Yesterday";
     if (daysSince === 2) return "1 Day Ago";
     if (daysSince === 3) return "2 Days Ago";
     if (daysSince === 4) return "3 Days Ago";
-    if (daysSince > 4) return movementDate;
+    if (daysSince > 4) return currentMovementDate;
   }
 
   return (
@@ -84,6 +87,7 @@ export function Main({
             currentMovements={currentMovements}
             displayMovementDates={displayMovementDates}
             fetchUserObject={fetchUserObject}
+            setCurrentMovements={setCurrentMovements}
           />
 
           <Summary
@@ -93,7 +97,7 @@ export function Main({
             fetchUserObject={fetchUserObject}
           />
           <Operations
-            setCurrentMovments={setCurrentMovments}
+            setCurrentMovements={setCurrentMovements}
             username={username}
             calculateBalance={calculateBalance}
             setSort={setSort}

@@ -13,6 +13,7 @@ export default function App() {
   const [allAccounts, setAllAccounts] = useState(accounts);
 
   function fetchUserObject(enteredInitials) {
+    if (!enteredInitials) return;
     const existingUsers = allAccounts.map((account) => account.owner);
     const existingUsersInitials = existingUsers.map((user) =>
       getInitials(user)
@@ -68,7 +69,6 @@ export default function App() {
           1000
         );
       if (secondsLeft === 0) setIsLoggedIn(false);
-      console.log(currentInterval);
 
       return () => clearInterval(currentInterval);
     },
